@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Osaka Chatbot</title>
+    <!-- Link to the stylesheet for the Matrix theme and overall design -->
+    <!-- Link to Font Awesome for icons (menu, image upload, send) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script type="module" crossorigin src="/assets/index-D7s5BWvD.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-tXN2f2My.css">
+  </head>
+  <body>
+    <div id="app">
+      <div class="container">
+        <!-- Sidebar for new chat button and bot name -->
+        <aside class="sidebar">
+            <div class="matrix-code"></div> <!-- Visual element for matrix rain effect -->
+            <div class="sidebar-header">
+                <h1>OSAKA</h1>
+            </div>
+            <button class="new-chat-btn">New Chat</button>
+
+            <!-- New section for chat history -->
+            <div class="chat-history-list">
+                <h2>Chat History</h2>
+                <ul id="history-list">
+                    <!-- Chat history items will be dynamically added here by JavaScript -->
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main content area for chat messages and input -->
+        <main class="main-content">
+            <!-- Mobile header with menu button for small screens -->
+            <div class="mobile-header">
+              <button class="menu-btn" aria-label="Open Menu">
+                <i class="fas fa-bars"></i> <!-- Font Awesome menu icon -->
+              </button>
+              <h1>OSAKA</h1>
+            </div>
+
+            <!-- Area where chat messages will be displayed -->
+            <div class="chat-messages">
+                <!-- Messages will be dynamically added here by JavaScript -->
+            </div>
+
+            <!-- Input area for typing messages and uploading images -->
+            <div class="input-area">
+                <form class="input-form">
+                    <!-- Label and hidden input for image file upload -->
+                    <label for="image-upload" class="image-upload-label" title="Upload Image">
+                        <i class="fas fa-image"></i> <!-- Font Awesome image icon -->
+                    </label>
+                    <input type="file" id="image-upload" accept="image/*" class="hidden">
+                    <!-- Text input field for user messages -->
+                    <input type="text" placeholder="Enter your message...">
+                    <!-- Button to send the message -->
+                    <button type="submit" aria-label="Send Message">
+                        <i class="fas fa-paper-plane"></i> <!-- Font Awesome send icon -->
+                    </button>
+                </form>
+            </div>
+        </main>
+      </div>
+    </div>
+    <!-- Link to the main JavaScript file, loaded as a module for imports -->
+  </body>
+</html>

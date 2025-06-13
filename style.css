@@ -1,0 +1,524 @@
+/* Google Fonts Import */
+/* Rajdhani for headings: modern, techy, clear */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap');
+/* Space Mono for body/chat: highly readable monospace, terminal-like */
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+/* Custom font for a more distinct Matrix-like feel (kept for thematic use if desired, though not for main text) */
+@font-face {
+    font-family: 'Matrix';
+    src: url('https://fonts.cdnfonts.com/css/matrix'); /* External font source */
+}
+
+/* Basic reset for margin, padding, and box-sizing across all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* Body styles: sets base font, background, and initial text color for the Matrix theme */
+body {
+    font-family: 'Space Mono', monospace; /* Primary font for general text, monospace for terminal feel */
+    background-color: #000; /* Deep black background */
+    color: #00ff00; /* Classic Matrix green */
+    min-height: 100vh; /* Ensures full viewport height */
+    position: relative;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    display: flex; /* Use flexbox for main content alignment */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically if space allows */
+}
+
+/* Pseudo-element for a subtle, full-screen matrix rain overlay */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.2) 100%);
+    pointer-events: none; /* Allows interaction with elements beneath */
+    z-index: -1; /* Place behind other content */
+    opacity: 0.7; /* Make the effect more pronounced */
+    animation: matrix-rain 25s linear infinite; /* Animation for a slower, smoother rain effect */
+}
+
+/* Keyframes for the matrix rain animation to create a falling effect */
+@keyframes matrix-rain {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+}
+
+/* Main container for the sidebar and chat content, ensuring it fills the screen */
+.container {
+    display: flex;
+    flex-direction: row; /* Default for desktop: sidebar next to main content */
+    height: 100vh; /* Full viewport height */
+    width: 100%; /* Full viewport width */
+    background: rgba(0, 0, 0, 0.85); /* Slightly transparent black */
+    backdrop-filter: blur(8px); /* Increased blur for more depth */
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.3); /* Stronger outer glow */
+    border-radius: 12px; /* Rounded corners for a modern feel */
+    overflow: hidden; /* Hide any overflowing content from rounded corners */
+}
+
+/* Sidebar Styles: Controls the navigation and 'New Chat' button area */
+.sidebar {
+    width: 100%;
+    max-width: 280px; /* Increased max-width for better desktop usability */
+    border-right: 1px solid rgba(0, 255, 0, 0.5); /* Semi-transparent green border */
+    padding: 1.5rem; /* Increased padding */
+    background: rgba(0, 20, 0, 0.95); /* Darker, slightly more opaque green background */
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.15); /* Subtle inner glow */
+    position: fixed; /* Fixed position for mobile slide-out */
+    height: 100vh;
+    z-index: 1000; /* Ensures it's on top on mobile */
+    transform: translateX(-100%); /* Hidden by default on mobile */
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* More playful, bouncy transition */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Media query for larger screens: sidebar becomes static and always visible */
+@media (min-width: 768px) {
+    .sidebar {
+        position: relative; /* No longer fixed */
+        transform: none; /* Always visible */
+        display: flex; /* Maintain flex properties */
+        border-right: 2px solid #00ff00; /* Stronger border on desktop */
+        min-width: 200px; /* Ensure a minimum width */
+    }
+    .container {
+        max-width: 90%; /* Limit overall container width on larger screens */
+        max-height: 90vh; /* Limit overall container height on larger screens */
+    }
+}
+
+/* Class to activate (show) the sidebar on mobile */
+.sidebar.active {
+    transform: translateX(0);
+}
+
+/* Matrix code overlay for the sidebar (can be enhanced with JS for dynamic effect) */
+.matrix-code {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.15; /* More subtle opacity */
+    background-image: url('https://placehold.co/100x100/000/0f0?text=MATRIX'); /* Placeholder for matrix pattern */
+    background-size: 20px 20px; /* Smaller pattern for more detail */
+}
+
+/* Sidebar header: contains the bot's name */
+.sidebar-header {
+    position: relative;
+    z-index: 1; /* Ensure text is above matrix code */
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* Slightly larger gap */
+    margin-bottom: 1.5rem; /* Reduced margin to make space for history */
+    text-shadow: 0 0 15px #00ff00, 0 0 25px rgba(0, 255, 0, 0.4); /* Enhanced text glow */
+}
+
+.sidebar-header h1 {
+    font-family: 'Rajdhani', sans-serif; /* Apply Rajdhani font */
+    font-size: 2rem; /* Larger font size for prominence */
+    font-weight: 700;
+    letter-spacing: 3px; /* Increased letter spacing */
+    color: #00ff00; /* Ensure strong green color */
+}
+
+/* New Chat button style: interactive and prominent */
+.new-chat-btn {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 0.8rem 1.5rem; /* Larger padding for easier tapping */
+    border-radius: 6px; /* Slightly rounded corners */
+    border: 2px solid #00ff00; /* Thicker border */
+    background: transparent;
+    color: #00ff00;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out; /* Smooth transition for hover effects */
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.3); /* Initial subtle glow */
+    margin-bottom: 2rem; /* Margin below the button */
+}
+
+.new-chat-btn:hover {
+    background-color: rgba(0, 255, 0, 0.2); /* More visible hover state */
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.8), 0 0 30px rgba(0, 255, 0, 0.4); /* Intense glow on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+.new-chat-btn:active {
+    transform: translateY(0); /* Press down effect */
+    background-color: rgba(0, 255, 0, 0.3);
+}
+
+/* Chat History List Styles */
+.chat-history-list {
+    flex: 1; /* Allow history list to take available space */
+    overflow-y: auto; /* Enable scrolling for history items */
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 255, 0, 0.3); /* Separator for history section */
+    margin-top: 1rem;
+    position: relative; /* For z-index context */
+    z-index: 1; /* Ensure history is above matrix effect */
+}
+
+.chat-history-list h2 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.2rem;
+    color: #00ff00;
+    text-shadow: 0 0 8px #00ff00;
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+}
+
+#history-list {
+    list-style: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+#history-list li {
+    background: rgba(0, 30, 0, 0.7); /* Darker background for list items */
+    border: 1px solid rgba(0, 255, 0, 0.4);
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    overflow: hidden; /* Ensure text truncates if too long */
+    position: relative;
+}
+
+#history-list li button {
+    display: block; /* Make the button fill the list item */
+    width: 100%;
+    padding: 0.75rem;
+    text-align: left;
+    color: #00ff00;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for truncated text */
+    transition: all 0.2s ease-in-out;
+}
+
+#history-list li button:hover {
+    background-color: rgba(0, 255, 0, 0.15);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    transform: translateX(5px); /* Slight slide effect on hover */
+}
+
+#history-list li.active-session button {
+    background-color: rgba(0, 255, 0, 0.3);
+    border-left: 4px solid #00ff00;
+    font-weight: bold;
+}
+
+
+/* Main content area for chat messages and input */
+.main-content {
+    flex: 1; /* Takes up all available space */
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Important for mobile responsiveness */
+}
+
+/* Mobile header: visible only on small screens, provides title and menu button */
+.mobile-header {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0, 255, 0, 0.5); /* Consistent border style */
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(0, 20, 0, 0.95); /* Opaque background */
+    box-shadow: 0 2px 10px rgba(0, 255, 0, 0.1); /* Subtle shadow */
+}
+
+/* Hide mobile header on larger screens */
+@media (min-width: 768px) {
+    .mobile-header {
+        display: none;
+    }
+}
+
+.mobile-header h1 {
+    font-family: 'Rajdhani', sans-serif; /* Apply Rajdhani font */
+    font-size: 1.8rem; /* Slightly smaller than desktop sidebar header */
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-shadow: 0 0 12px #00ff00;
+}
+
+/* Chat Messages Area: main display for conversation */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto; /* Enable scrolling for chat history */
+    padding: 1.5rem; /* Increased padding */
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem; /* Space between messages */
+    scroll-behavior: smooth; /* Smooth scrolling for new messages */
+}
+
+/* Individual message container */
+.message {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    width: fit-content; /* Adjust width to content, not full line */
+    max-width: 90%; /* Limit message width on all screens */
+    animation: fadeIn 0.5s ease-out; /* Subtle fade-in animation for new messages */
+}
+
+/* Fade-in animation for messages */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Adjust max-width for messages on larger screens */
+@media (min-width: 768px) {
+    .message {
+        max-width: 70%; /* Smaller max-width for better readability on wide screens */
+    }
+}
+
+/* User message specific styling: pushes message to the right, reverses avatar position */
+.message.user {
+    margin-left: auto;
+    flex-direction: row-reverse;
+}
+
+/* Avatar styling for user and Osaka */
+.avatar {
+    flex-shrink: 0; /* Prevent avatar from shrinking */
+    width: 2.8rem; /* Slightly larger avatar for better visibility */
+    height: 2.8rem;
+    border-radius: 50%; /* Make avatars circular */
+    background-color: rgba(0, 255, 0, 0.2); /* Semi-transparent green background */
+    border: 2px solid #00ff00; /* Solid green border */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace; /* Apply Space Mono */
+    font-weight: bold;
+    font-size: 1.2rem; /* Larger font for avatar text */
+    text-shadow: 0 0 8px #00ff00; /* Glow for avatar text */
+    box-shadow: 0 0 12px rgba(0, 255, 0, 0.4); /* Stronger glow for avatar */
+    transition: transform 0.2s ease-out;
+}
+
+.avatar:hover {
+    transform: scale(1.05); /* Subtle scale effect on hover */
+}
+
+/* Message content bubble styling */
+.message-content {
+    padding: 0.9rem 1.2rem; /* Increased padding */
+    border-radius: 8px; /* Slightly rounded corners for bubbles */
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    background: rgba(0, 20, 0, 0.8); /* More opaque background for readability */
+    text-shadow: 0 0 3px #00ff00; /* Clearer text glow */
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.25); /* Clearer bubble glow */
+    font-family: 'Space Mono', monospace; /* Apply Space Mono */
+    font-size: 0.95rem; /* Slightly larger font size */
+    line-height: 1.5; /* Better line spacing for readability */
+    word-break: break-word;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Specific border for assistant messages */
+.message.assistant .message-content {
+    border-left: 4px solid #00ff00; /* Thicker left border */
+    border-top-left-radius: 0; /* Keep top-left sharp */
+}
+
+/* Specific border for user messages */
+.message.user .message-content {
+    border-right: 4px solid #00ff00; /* Thicker right border */
+    border-top-right-radius: 0; /* Keep top-right sharp */
+}
+
+/* Styling for images within messages */
+.message-content img {
+    max-width: 100%;
+    height: auto;
+    max-height: 250px; /* Slightly increased max height */
+    display: block;
+    border: 2px solid #00ff00; /* Thicker border for images */
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Glow for images */
+    transition: all 0.3s ease-in-out;
+}
+
+.message-content img:hover {
+    transform: scale(1.02); /* Slight zoom on image hover */
+}
+
+/* Input Area Styles: Bottom bar for message input */
+.input-area {
+    border-top: 1px solid rgba(0, 255, 0, 0.5); /* Consistent border style */
+    padding: 1rem 1.5rem; /* Generous padding for interaction */
+    background: rgba(0, 20, 0, 0.95);
+    box-shadow: 0 -2px 10px rgba(0, 255, 0, 0.1); /* Subtle shadow from top */
+}
+
+/* Form for input elements, using grid for flexible layout */
+.input-form {
+    display: grid;
+    grid-template-columns: auto 1fr auto; /* Icon | Input Field | Button */
+    gap: 0.75rem; /* Increased gap between elements */
+    align-items: center;
+    max-width: 900px; /* Limit input form width on larger screens */
+    margin: 0 auto; /* Center the input form */
+}
+
+/* Style for the image upload label (acts as an interactive button) */
+.image-upload-label {
+    cursor: pointer;
+    padding: 0.75rem; /* Larger touch target */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #00ff00;
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px; /* Rounded corners */
+    font-size: 1.2rem; /* Larger icon size */
+}
+
+.image-upload-label:hover {
+    text-shadow: 0 0 15px #00ff00, 0 0 25px rgba(0, 255, 0, 0.4);
+    transform: scale(1.1); /* Pop effect on hover */
+    background-color: rgba(0, 255, 0, 0.1);
+}
+
+.image-upload-label:active {
+    transform: scale(1.05); /* Press effect */
+}
+
+/* Hide the actual file input element */
+.hidden {
+    display: none;
+}
+
+/* Text input field styling */
+.input-form input[type="text"] {
+    padding: 0.9rem 1.2rem; /* Increased padding */
+    border-radius: 8px; /* Rounded corners */
+    border: 1px solid #00ff00;
+    background-color: rgba(0, 20, 0, 0.7); /* Match message background */
+    color: #00ff00;
+    font-family: 'Space Mono', monospace; /* Apply Space Mono */
+    font-size: 1rem; /* Clearer font size */
+    text-shadow: 0 0 2px #00ff00;
+    width: 100%; /* Ensures it takes available space */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Placeholder text color */
+.input-form input::placeholder {
+    color: rgba(0, 255, 0, 0.6); /* Slightly more visible placeholder */
+}
+
+/* Focus styles for the input field: prominent glow */
+.input-form input:focus {
+    outline: none;
+    border-color: #00ff00;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5), inset 0 0 5px rgba(0, 255, 0, 0.2); /* Outer and inner glow */
+    background-color: rgba(0, 20, 0, 0.9); /* Darker on focus */
+}
+
+/* Send button styling */
+.input-form button {
+    background: none;
+    border: none;
+    color: #00ff00;
+    cursor: pointer;
+    padding: 0.75rem; /* Larger touch target */
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px; /* Rounded corners */
+    font-size: 1.2rem; /* Larger icon size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-form button:hover {
+    text-shadow: 0 0 15px #00ff00, 0 0 25px rgba(0, 255, 0, 0.4);
+    transform: scale(1.1); /* Pop effect on hover */
+    background-color: rgba(0, 255, 0, 0.1);
+}
+
+.input-form button:active {
+    transform: scale(1.05); /* Press effect */
+}
+
+/* Mobile menu button style */
+.menu-btn {
+    display: block; /* Visible by default on mobile */
+    background: none;
+    border: none;
+    color: #00ff00;
+    cursor: pointer;
+    padding: 0.75rem; /* Larger touch target */
+    font-size: 1.5rem; /* Larger icon */
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px;
+}
+
+@media (min-width: 768px) {
+    .menu-btn {
+        display: none; /* Hide menu button on larger screens */
+    }
+}
+
+.menu-btn:hover {
+    text-shadow: 0 0 15px #00ff00;
+    transform: scale(1.1);
+    background-color: rgba(0, 255, 0, 0.1);
+}
+
+.menu-btn:active {
+    transform: scale(1.05);
+}
+
+/* Scrollbar Styles: Customizing the look of scrollbars */
+::-webkit-scrollbar {
+    width: 10px; /* Wider scrollbar for easier use */
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 20, 0, 0.9); /* Dark track */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #00ff00; /* Green thumb */
+    border-radius: 10px;
+    border: 2px solid rgba(0, 255, 0, 0.3); /* Subtle border */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 0, 0.8); /* Lighter green on hover */
+}
+
+/* Styling for when the sidebar is open on mobile, preventing body scroll */
+body.sidebar-open {
+    overflow: hidden;
+}
